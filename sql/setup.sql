@@ -3,8 +3,8 @@
 DROP TABLE IF EXISTS github_users;
 
 CREATE TABLE github_users (
-    id bIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username TEXT NOT NULL,
-    email TEXT,
-    avatar TEXT
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  username TEXT NOT NULL,
+  email TEXT,
+  avatar TEXT
 );
