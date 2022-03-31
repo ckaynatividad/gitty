@@ -3,7 +3,6 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
-
 jest.mock('../lib/utils/github');
 
 describe('github routes', () => {
@@ -33,7 +32,13 @@ describe('github routes', () => {
   });
 
   it('logsout user via delete', async () => {
-    const res = await request.agent(app).delete('/api/v1/github');
+    const agent = request.agent(app);
+    let res = await agent.post('/api/v1/posts');
+    expect(res.status).toEqual(401);
+
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+
+    res = await request.agent(app).delete('/api/v1/github');
     expect(res.body).toEqual({
       message: 'signed out',
       success: true,
