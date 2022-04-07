@@ -23,12 +23,14 @@ describe('github routes', () => {
   });
 
   it('should redirect through callback', async () => {
-    const res = await request
-      .agent(app)
+    const agent = request.agent(app);
+    agent
       .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
+      .redirects(1)
+      .then((res) => {
+        expect(res.redirects).toContainEqual(expected);
+      });
     const expected = expect.stringMatching('/api/v1/posts');
-    expect(res.redirects).toContainEqual(expected);
   });
 
   it('logsout user via delete', async () => {
