@@ -2,7 +2,6 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const GithubUser = require('../lib/models/GithubUser');
 
 jest.mock('../lib/utils/github');
 
@@ -36,12 +35,20 @@ describe('posts routes', () => {
       content: 'test test test',
     };
 
-    let res = await agent.post('/api/v1/posts').send(expected);
-    expect(res.status).toEqual(401);
+    await agent
+      .post('/api/v1/posts')
+      .send(expected)
+      .then((res) => {
+        expect(res.status).toEqual(401);
+      });
 
     await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
 
-    res = await agent.post('/api/v1/posts').send(expected);
-    expect(res.body).toEqual({ id: expect.any(String), ...expected });
+    return agent
+      .post('/api/v1/posts')
+      .send(expected)
+      .then((res) => {
+        expect(res.body).toEqual({ id: expect.any(String), ...expected });
+      });
   });
 });
