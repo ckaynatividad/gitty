@@ -15,18 +15,20 @@ describe('posts routes', () => {
   });
 
   it('should login and redirect users to all posts', async () => {
-    const res = await request
-      .agent(app)
-      .get('/api/v1/github/login/callback?code=42')
-      .redirects(1);
-
-    expect(res.status).toEqual(200);
-    expect(res.body).toEqual([
+    const expected = [
       {
         id: '1',
         content: 'Hello there',
       },
-    ]);
+    ];
+    await request
+      .agent(app)
+      .get('/api/v1/github/login/callback?code=42')
+      .redirects(1)
+      .then((res) => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual(expected);
+      });
   });
 
   it('allows user to create post', async () => {
