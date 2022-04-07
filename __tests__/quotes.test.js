@@ -3,9 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
-jest.mock('../lib/utils/github');
-
-describe('posts routes', () => {
+describe('quotes routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
