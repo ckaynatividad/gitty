@@ -14,15 +14,16 @@ describe('github routes', () => {
     pool.end();
   });
 
-  it('should redirect to oauth on login', async () => {
-    const req = await request(app).get('/api/v1/github/login');
-
-    expect(req.header.location).toMatch(
-      /https:\/\/github.com\/login\/oauth\/authorize\?client_id=[\w\d]+&scope=user&redirect_uri=http:\/\/localhost:7890\/api\/v1\/github\/login\/callback/i
-    );
+  it('should redirect to oauth on login', () => {
+    const agent = request.agent(app);
+    agent.get('/api/v1/github/login').then((req) => {
+      expect(req.header.location).toMatch(
+        /https:\/\/github.com\/login\/oauth\/authorize\?client_id=[\w\d]+&scope=user&redirect_uri=http:\/\/localhost:7890\/api\/v1\/github\/login\/callback/i
+      );
+    });
   });
 
-  it('should redirect through callback', async () => {
+  it('should redirect through callback', () => {
     const agent = request.agent(app);
     agent
       .get('/api/v1/github/login/callback?code=42')
