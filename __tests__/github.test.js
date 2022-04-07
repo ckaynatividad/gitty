@@ -34,7 +34,7 @@ describe('github routes', () => {
       });
   });
 
-  it.only('logsout user via delete', async () => {
+  it('logsout user via delete', async () => {
     const agent = request.agent(app);
 
     let res = await agent.post('/api/v1/posts');
