@@ -12,14 +12,14 @@ describe('quotes routes', () => {
     pool.end();
   });
 
-  it('gets quotes', async () => {
+  it('gets quotes', () => {
     const agent = request.agent(app);
     const expected = [
       { author: expect.any(String), content: expect.any(String) },
       { author: expect.any(String), content: expect.any(String) },
       { author: expect.any(String), content: expect.any(String) },
     ];
-    await agent.get('/api/v1/quotes').then((res) => {
+    agent.get('/api/v1/quotes').then((res) => {
       expect(res.body).toEqual(expected);
     });
   });
